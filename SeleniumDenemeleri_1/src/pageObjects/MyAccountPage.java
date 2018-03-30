@@ -4,9 +4,13 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 public class MyAccountPage {
 	WebDriver myDriver;
@@ -62,21 +66,43 @@ public class MyAccountPage {
 	public int findProInFavorites(String inSearchElem)
 	{
 		int retVal = 0;		
-		for(int i=1;i<=listOfFavProducts.size();++i)
+		try
 		{
-			xpathOfElem.setCharAt(22,Integer.toString(i).charAt(0));
-			if(inSearchElem.equals(this.myDriver.findElement
-			  (By.xpath(xpathOfElem.toString())).getAttribute("title").toString()))
+			for(int i=1;i<=listOfFavProducts.size();++i)
 			{
-				retVal = i;
+				xpathOfElem.setCharAt(22,Integer.toString(i).charAt(0));
+				if(inSearchElem.equals(this.myDriver.findElement
+				  (By.xpath(xpathOfElem.toString())).getAttribute("title").toString()))
+				{
+					retVal = i;
+				}
 			}
+			return retVal;
 		}
-		return retVal;
+		catch(Exception e)
+		{
+			return retVal;
+		}
+		
+		
 	}
-	public void deleteProFromFavList(int inDeleteIndex)
+	public boolean deleteProFromFavList(int inDeleteIndex)
 	{
-		xpathOfDeleteElem.setCharAt(22,Integer.toString(inDeleteIndex).charAt(0));
-		this.myDriver.findElement(By.xpath(xpathOfDeleteElem.toString())).click();	
+		try
+		{
+			WebDriverWait wait = new WebDriverWait(this.myDriver, 10);
+			xpathOfDeleteElem.setCharAt(22,Integer.toString(inDeleteIndex).charAt(0));
+			WebElement tmpElement = this.myDriver.findElement(By.xpath(xpathOfDeleteElem.toString()));
+			tmpElement.click();
+			deleteConfirmClick();
+			wait.until(ExpectedConditions.not(ExpectedConditions.presenceOfElementLocated(By.xpath(xpathOfDeleteElem.toString()))));
+			return true;
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
+
 	}
 	private void clickHiddenButton(WebElement element)
 	{	
@@ -84,6 +110,7 @@ public class MyAccountPage {
 		js.executeScript("arguments[0].click();", element);
 		
 	}
+
 	public void waitSeconds(int inVal)
 	{
 		myDriver.manage().timeouts().implicitlyWait(inVal, TimeUnit.SECONDS);

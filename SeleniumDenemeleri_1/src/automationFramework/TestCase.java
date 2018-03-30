@@ -106,13 +106,11 @@ public class TestCase {
 	  
 	  deleteProIndex = myAccountPage.findProInFavorites(selectedProductDetails);
 	  
-	  myAccountPage.deleteProFromFavList(deleteProIndex);
-	  
-	  myAccountPage.deleteConfirmClick();
+	  System.out.println(myAccountPage.deleteProFromFavList(deleteProIndex));
 	  
 	  myAccountPage.waitSeconds(5);
 	  
-	  System.out.println(myAccountPage.findProInFavorites(selectedProductDetails));
+	  assertTrue(myAccountPage.findProInFavorites(selectedProductDetails) == 0);
 	  
   }
   @BeforeTest

@@ -49,7 +49,6 @@ public class ProductPage {
 	{
 		boolean retVal = false;
 		boolean isSkuAreaExist = this.myDriver.findElements(By.cssSelector("#skuArea")).size() > 1;		
-		System.out.println(isSkuAreaExist);
 		if(isSkuAreaExist)
 		{
 			List<WebElement> selectOptions;
