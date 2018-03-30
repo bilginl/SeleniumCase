@@ -38,7 +38,7 @@ public class TestCase {
   	
   	assertTrue(myLoginPage.isLoginScreen());
   	
-  	myLoginPage.setEmailInput("leventt.bilginer@gmail.com");
+  	myLoginPage.setEmailInput("kamivufoze@web2mailco.com");
   	
   	myLoginPage.setPasswordInput("24122412Aa");
   	
